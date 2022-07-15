@@ -397,7 +397,7 @@ text-align:center;
 	80%{-o-transform:translateY(-10px);transform:translateY(-10px)}
 	100%{-o-transform:translateY(0);transform:translateY(0)}
 	}
-.NumContact_right .NumConR_article {padding:50px; padding-bottom:0px;}
+.NumContact_right .NumConR_article {padding-bottom:0px;}
 .NumContact_right .NumConR_article img {width:100%; height:auto;}
 .NumContact_right .NumConR_article .NumR_a {font-size:18px; color:#cf292f; line-height:40px;}
 .NumContact_right .NumConR_article .NumR_a p span {font-size:35px; color:#cf292f; font-family:arial; font-weight:bold;}
