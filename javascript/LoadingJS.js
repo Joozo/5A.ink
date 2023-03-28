@@ -310,6 +310,15 @@ LoadingJS.prototype = {
 	},
 
 	destroy : function(){
+
+		// video1.removeEventListener('ended',this);
+                            
+        //                     $('.shade').hide();
+        //                     $("#videoID").hide();
+        //                     $(".flipbook").show();
+        //                     // $('.flipbook-viewport').show();
+        //                     $('.flipbook-viewport').fadeIn(3000);
+        //                     $('#musicinfo').show();
 		if(global.isIE8()||global.isIE9()){
 			$(this.bg).animate({"opacity":"0"},0.6,function(){
 				this.loadingAnimation = false;

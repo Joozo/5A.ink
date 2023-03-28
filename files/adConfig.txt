@@ -1,1 +1,1 @@
-{"haveAd":true,"interval":3000,"data":[{"src":"files\/extfile\/ED2093923100B90BDA6C7702D41F709F.jpg","url":"https:\/\/gowan.cl\/"}]}
+{"haveAd":true,"interval":3000,"data":[{"src":"files\/extfile\/ED2093923100B90BDA6C7702D41F709F.jpg","url":"https:\/\/baidu.com\/"}]}
