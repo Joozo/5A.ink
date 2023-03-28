@@ -1,376 +1,472 @@
-function LoadingJS(){
-	
-	this.loadBookConfig();   //#1F2232,#DDDDDD
-	
-	this.body = $("body");
+document.write("<style>"+
+	"@keyframes loadingAnimate{from {-webkit-transform: rotateY(0deg) scale(0.8);-o-transform: rotateY(0deg) scale(0.8);-ms-transform: rotateY(0deg) scale(0.8);-moz-transform: rotateY(0deg) scale(0.8);transform: rotateY(0deg) scale(0.8);}to {-webkit-transform: rotateY(-180deg) scale(0.8);-o-transform: rotateY(-180deg) scale(0.8);-ms-transform: rotateY(-180deg) scale(0.8);-moz-transform: rotateY(-180deg) scale(0.8);transform: rotateY(-180deg) scale(0.8);}}"+
+	"@-webkit-keyframes loadingAnimate{from {-webkit-transform: rotateY(0deg) scale(0.8);-o-transform: rotateY(0deg) scale(0.8);-ms-transform: rotateY(0deg) scale(0.8);-moz-transform: rotateY(0deg) scale(0.8);transform: rotateY(0deg) scale(0.8);}to {-webkit-transform: rotateY(-180deg) scale(0.8);-o-transform: rotateY(-180deg) scale(0.8);-ms-transform: rotateY(-180deg) scale(0.8);-moz-transform: rotateY(-180deg) scale(0.8);transform: rotateY(-180deg) scale(0.8);}}"+
+	".loadingRun{-webkit-animation : loadingAnimate 1.2s infinite;animation : loadingAnimate 1.2s infinite;}" + 
+	".loader,.loader:after {border-radius: 50%;width: 60px;height: 60px;}" +
+".loader {margin: 60px auto;font-size: 10px;position: relative;text-indent: -9999em;border-top: 1.1em solid rgba(255, 255, 255, 0.2);border-right: 1.1em solid rgba(255, 255, 255, 0.2);border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);" + 
+  "border-left: 1.1em solid #ffffff;-webkit-transform: translateZ(0);-ms-transform: translateZ(0);transform: translateZ(0);-webkit-animation: load8 1.1s infinite linear;animation: load8 1.1s infinite linear;}" +
+ "@-webkit-keyframes load8 {0% {-webkit-transform: rotate(0deg);transform: rotate(0deg);}100% {-webkit-transform: rotate(360deg);transform: rotate(360deg);}}" +
+ "@keyframes load8 {0% {-webkit-transform: rotate(0deg);transform: rotate(0deg);}100% {-webkit-transform: rotate(360deg);transform: rotate(360deg);}}" +
+"</style>");
 
-  this.instance = $("<div id='loading_bg'></div>");
-  this.proTitle = $("<div id='progress_title'></div>");
-  this.stepTitle = $("<div id='step_title'></div>");
-  this.loadingBG = $("<div id='loading_progres'></div>");
-  this.loadingItem = $("<div id='loading_progress_item'></div>"); 
+var videoImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAABYCAYAAAAUeMJLAAAABHNCSVQICAgIfAhkiAAABRBJREFUeF7tnb2rHUUYxp8H/wBjo6Wd2ARvesFYCTbJBRtBMCqmsAhGEPEDTNBCBSGQQrQxkYhCiqhNRBAjtkJu8APBSgu1EExEwaj4ynPdve7ds4dzdmZ2Z+fu+8LlwLkz884+v/l4z+zsDrHEzOwQgA0AB6vPfcvS+vdJFbgKYAvAJX2SfL+rdLa/NDPBerOClbRGXliQAoL4EEl97tgucGb2PIATQcV7pqEVOEHyZO1kB5yZCZjAuU1XgeMkT6l62+Cq4fFyR33PAjhTjbUae90GVsDMFEtoujoC4MEOdwc0bNbgBE2Ja7sG4DBJTZBumRQwMwWG7wG4sVEFBSwHaGaHAVxo1e1uh5aJVsttBe+T1tebAtee286SVDd1m4gCZqbpqjlsnhQ4DYd3NerovW0iwOpqdPS6TwXuFwDNH9c3kfRAZELwqoBFnGq7KnDWrCPJhR/lXdfQzpfiOnP5zuVXmoX6dnAR4uVsrA7OwcW3v9BhI9ZzLr8+VEaSc3CFCujgHFxvBUIbjQcnHpz0bmwLGUJbX6znXH6zBCexYnn+fgosLJSErpz0c+upYxVwcLEKZsrv4DIJH+vWwcUqmCm/g8skfKxbBxerYKb8Di6T8LFu9wQ4M7sBwG3aWUjym1hRSshfPDgzewDAqwBurgT/GcDbAJ4j+VsJEELqWDQ4M7sdwJcA1OPa9h2AoyQ/ChFm6nlKB3cewH0rRH4LwDGS2tS7Z6x0cD8BuGUNGj8CeIykdgHvCSsdnLYNNrdjr4IicI+S1DxYtM0NnGAJmobOd0omN0dwNS8FLQpeFMQUZ3MGJ1i/A3gGwGmSuzYCT53k3MHVfD4D8AjJb6cOrK6fg/uf1B8A9GjuKyT/mTpAB7dI6HMAD5P8YsrwHFw3nb8AvAzgRZLXpwiwdHDtR8JSa/wVgHtJfp+64NjyHNxqBb8GoAfk/1yddLwUDm49rdXrLq6XdJxUpYPru+QVqurTJF8KzTxEPge3nqr3k3x3vaTjpHJwq3X+FcCtU3sOvnRwQ0eVWhI7RPLj1XzHTVE6uCHnuEkvgzm4xY6iO+VPAXhjygvPDm43OG0yepKk7phP2hzcf3iK21g0d3C6C3AawLMkFYgUY3MGp9V/3QXQ3YDibI7gtNr/QnXfTXcBirS5gZt0iN+nBc0FnHZ2PQHg3JRD/DmB+xDAPSsuWCH+43thL2XzOkvvcV2vIa6vr7gQfzY9ThdqZq9rf2Tjov8G8BoA3YopKsSfFbgK3n4Ad4ojgA9I/tBHhBLTFj1Ulih4qjo7uFRKjlyOgxtZ8FTuHFwqJUcux8GNLHgqdw4ulZIjl+PgRhY8lTsHl0rJkctxcCMLnspdMnDtglJUMNcrdnP5lWahvv1l2hHi5WysDs7Bxbe/0GEj1nMuvz5URpJzcIUK6OAcXG8FQhuNBycenPRubAsZQltfrOdcfmODk/ajS364bWxLSJy/43Dba36cdGKRhyhu2XHSfoD7EGonLHPZAe5dexX9EPeEwscU1dHbVNzm9pnfZrYF4I6GA817myQvxTj1vHEKVNAuANjXKOkKyY0a3AaAyx1uzgDQnxILptvAClSBiDrRkeqv7VFvPdraBlf1uvZcN3AVvfgABY6TPLX9M6KZ2cwcXoCaI2XZgbYArup5GjY1PDbnvJHq5m46FLiiIVPDY/N/u3pcq/cp2hTEg9Vnn9fGO4FwBfT6DkFSYLi17OyEfwGiWm1shbv/BgAAAABJRU5ErkJggg==";
+var parseBool = function(value,defaultValue){
 
-  this.instance.css({
-  	"display" : "none",
-  	"position" : "absolute",
-  	"width" : "480px",
-  	"height" : "70px",
-  	'top' : '50%',
-  	'left' : '50%',
-  	'margin-left' : '-240px',
-  	'margin-top' : '-35px',
-  	"z-index" : 10000,
-  	"background-color" : "transparent"
-  });
-  //this.addGradient(this.instance,"#B3B3B3","white");
-  
-  /*
-  	"background-color" : "#1F2232",
-  	"border-radius" : "3px",
-  	"border":"1px solid #DCDCDC",
-  	"box-shadow" : "2px 2px 2px #333333",
-  	"-mz-box-shadow" : "2px 2px 2px #333333",
-  	"-ms-box-shadow" : "2px 2px 2px #333333",
-  	"-webkit-box-shadow" : "2px 2px 2px #333333",
-  	"-o-box-shadow" : "2px 2px 2px #333333"
-  */
+	if(value === true || value === false) return value;
+	if(value == undefined || value == null) return false;
+	defaultValue = !!defaultValue;
 
-  this.proTitle.css({
-  	"position" : "absolute",
-  	"left" : "10px",
-  	"top" : "10px",
-  	"width" : "460px",
-  	"text-align" : "center",
-  	"font-family" : "Tahoma",
-  	"font-size" : "24px",
-  	"color" : "white",
-  	"word-break" : "keep-all",
-  	"white-space" : "nowrap",
-  	"overflow" : "hidden",
-  	"text-overflow" : "ellipsis"
-  	
-  });
-  
-  this.proTitle.css({"text-shadow":"0 0 5px #8c97cb, 0 0 10px #8c97cb,0 0 15px #8c97cb"});	 
-  
-  this.loadingBG.css({
-    "position" : "absolute",
-    "width" : "280px",
-    "height" : "10px",
-    "left" : "10px",
-    "top" : "35px",
-    "background-color" : "#F3F4F9",
-    "border-radius" : "2px",
-    "display":"none"
-  });
-  
-  this.loadingItem.css({
-  	"position" : "absolute",
-  	"width" : "0px",
-  	"height" : "10px",
-  	"left" : "0px",
-  	"top" : "0px",
-  	"background-color" : "#3FB5F2",
-  	"border-radius" : "2px",
-  	"display":"none"
-  });
-  
-  this.stepTitle.css({
-  	"position" : "absolute",
-  	"left" : "10px",
-  	"top" : "50px",
-  	"width" : "460px",
-  	"text-align" : "center",
-  	"font-family" : "Tahoma",
-  	"font-size" : "12px",
-  	"color" : this.loadingCaptionColor,
-  	"word-break" : "keep-all",
-  	"white-space" : "nowrap",
-  	"overflow" : "hidden",
-  	"text-overflow" : "ellipsis"
-  });
-  
-  //this.body.css({"background-color":this.backgroundColor});
-  this.initBackground();
-  
-  this.body.append(this.instance);
-  this.instance.append(this.proTitle);
-  this.instance.append(this.loadingBG);
-  this.instance.append(this.stepTitle);
-  this.loadingBG.append(this.loadingItem);
-  
-  this.init();  
-  this.addLoadingImage();
-  
-  this.show();
+	if(typeof(value) == "number") return (value != 0);
+	if(typeof(value) != "string") return false;
+
+	if(value == "") return false;
+
+	var trueArr=['true','yes','show','enable'],
+	falseArr=['false','no','hide','disable'],
+	value = value.toLowerCase();
+
+	if(trueArr.indexOf(value) < 0 && falseArr.indexOf(value) < 0){
+		return defaultValue;
+	}else{
+		return trueArr.indexOf(value)>=0;
+	}
+};
+
+var isIphone = function(){
+	var userAgent = navigator.userAgent.toLowerCase();
+	return userAgent.indexOf("iphone") > 0 ;
+}
+
+var isIphoneXor11 = function(){
+	return isIphone() && ((screen.height == 812 && screen.width == 375)||(screen.height == 896 && screen.width == 414));
+}
+
+window.waitForLoading = true;
+var LoadingJS = function(){
+	this.initConfig();
+
+	this.initHtml();
+	this.initCss();
+
+	this.startLoading();
+	this.onResize();
+
+	var self = this;
+	window.onresize =function(){
+		self.onResize();
+	};
+
+	window.setTimeout(function(){window.waitForLoading = false;},250);
 }
 
 LoadingJS.prototype = {
-	loadBookConfig : function(){
-	
-		this.loadingCaption, this.loadingCaptionColor, this.hasLoadingPicture, this.loadingPicture;
-		
-	  try{
-	  	this.loadingCaption = bookConfig.loadingCaption?bookConfig.loadingCaption:"Loading";
-	  	this.loadingCaptionColor = bookConfig.loadingCaptionColor?bookConfig.loadingCaptionColor:"#DDDDDD";
-	  	this.loadingBackground = bookConfig.loadingBackground?bookConfig.loadingBackground:"#1F2232";
-	  	
-	  	this.loadingPicture = bookConfig.loadingPicture?bookConfig.loadingPicture:"";
-	  	this.hasLoadingPicture = (this.loadingPicture != "");
-	  }catch(err){
-	  	this.loadingCaption = "Loading";
-	  	this.loadingCaptionColor = "#DDDDDD";
-	  	
-	  	this.hasLoadingPicture = false;
-	  	this.loadingPicture = "";
-	  }
-	  
-	  //console.log("loadingPicture:%s", this.loadingPicture);
-	  
-	},
-	
-	init: function(){
-		var doc = $(document);
-		
-		var windowWidth = doc.width(), windowHeight = Math.max(doc.height(),400), progressWidth = 480, progressHeight = 70;
-		
-		var progressLeft = (windowWidth - progressWidth) / 2, progressTop = (windowHeight - progressHeight) / 2;
-		
-		// this.instance.css({"left":progressLeft + "px", "top":progressTop + "px"});
-		
-		this.proTitle.text($(document).attr("title"));
-		this.stepTitle.text(this.loadingCaption + "...");
-		
-		var self = this,iWidth = 0,iStep = 2;
-		var oldColor = this.colorSplit("#3FB5F2");
-		this.timer = window.setInterval(function(){
 
-				/*var pAddR = Math.floor((255 - oldColor.r) * iWidth / 280),
-				    pAddG = Math.floor((255 - oldColor.g) * iWidth / 280),
-				    pAddB = Math.floor((255 - oldColor.b) * iWidth / 280);
-				
-				var newEndColor = self.colorAdd("#3FB5F2",pAddR,pAddG,pAddB);
-				self.addGradient(self.loadingItem,"#3FB5F2",newEndColor);
-
-				self.loadingItem.css({width : iWidth +"px"});
-				iWidth += iStep;
-				if(iWidth == 280) iWidth = 0; */
-				
-				iWidth += iStep;
-				var iCount = Math.floor(iWidth / 50) % 3;
-				
-				switch(iCount){
-					case 0:{self.stepTitle.text(self.loadingCaption + ".  ");break;}
-					case 1:{self.stepTitle.text(self.loadingCaption + ".. ");break;}
-					case 2:{self.stepTitle.text(self.loadingCaption + "...");break;}
-					default:break;
-				}
-				
-				
-			},40);
-	},
-	show: function(){
-		this.instance.css({"display":"block"});
-	},
-	
-	addLoadingImage : function(){
-		if(this.hasLoadingPicture == false) return;
-		
-		this.loadingImg = $("<img style='display:none;position:absolute;z-index:10000'></img>");
-
-  	var self = this;
-  	this.loadingImg.load(function(){
-  		
-  		var doc = $(document), windowWidth = doc.width() , oImage = self.loadingImg[0];
-  		var iImageWidth = oImage.naturalWidth, iImageHeight = oImage.naturalHeight;
-  		
-  		var iInstanceTop;
-  		try{
-  			iInstanceTop = parseInt(self.instance.css("top").replace("px","")) + parseInt(self.instance.css("margin-top").replace("px",""));
-  	  }catch(err){
-  	  	iInstanceTop = iImageHeight;
-  	  }
-  	  
-  		var iLeft = (windowWidth - iImageWidth) / 2, iTop = iInstanceTop - iImageHeight;
-  		
-  		//console.log("image loaded, left:%d,top:%d,width:%d,height:%d",iLeft,iTop,iImageWidth,iImageHeight);
-
-  		self.loadingImg.css({
-  			"left" : iLeft + "px",
-  			"top" : iTop + "px",
-  			"width": iImageWidth + "px",
-  			"height": iImageHeight + "px",
-  			"display":"block"
-  		});
-  	});
-  	
-  	this.loadingImg.attr("src", this.loadingPicture);
-  	this.body.append(this.loadingImg);
-	},
-	
-	destroy: function(){
-		window.clearInterval(this.timer);
-		this.body.css({"background-color":""});
-		this.instance.css({"display":"none","z-index":1});
-		this.instance.empty();
-		this.instance.remove();
-		
-		if(this.loadingImg){
-			this.loadingImg.css({"display":"none","z-index":1});
-			this.loadingImg.remove();
+	initConfig : function(){
+		if(!window.bookConfig && window.htmlConfig && window.htmlConfig.bookConfig) {
+			window.bookConfig = window.htmlConfig.bookConfig;
 		}
-	},
-	getBrowserType : function(){
-		
-		var isIE11 = function(){
-			var userAgent = navigator.userAgent.toLowerCase();
-			return (!$.browser.msie) && (userAgent.indexOf("trident") > 0);
-		};
-		
-		var browserType = 0;
-		
-		if($.browser.msie || isIE11()) {
-			browserType = 3;
-		} else if($.browser.mozilla && !isIE11()) {
-			browserType = 2;
-		} else if($.browser.safari) {
-			browserType = 1;
-		} else if($.browser.opera) {
-			browserType = 4;
-		};
-		
-		return browserType;
-	},
-	addGradient : function(item,beginColor, endColor){
-		
-
-		var browserType = this.getBrowserType();
-
-		var sLeft = "",sMsLeft="0";
-		var horz = true;
-		if(horz) {sLeft = "left,";sMsLeft="1";}
-		
-		item.css({background: "linear-gradient("+ sLeft + beginColor +", "+ endColor +")"});
-		switch(browserType){
-			case 1:{
-				item.css({background: "-webkit-linear-gradient("+ sLeft + beginColor +", "+ endColor +")"});
-				break;
-			}
-			case 2:{
-				item.css({background: "-moz-linear-gradient("+ sLeft + beginColor +", "+ endColor +")"});
-				break;
-			}
-			case 3:{
-				item.css({background: "-ms-linear-gradient("+ sLeft + beginColor +", "+ endColor +")"});
-				item.css("filter", "progid:DXImageTransform.Microsoft.Gradient(GradientType="+ sMsLeft +", EndColorStr=" +
-			endColor + ", StartColorStr=" + beginColor + ")");					
-				break;
-			}
-			case 4:{
-				item.css({background: "-o-linear-gradient("+ sLeft + beginColor +", "+ endColor +")"});
-				break;
-		
-			}
-		}	
-	
-		
-	},
-	colorSplit : function(color){
-		var colorRGB = {r : 0, g : 0, b : 0};
-		
-		var red = "FF",green ="FF",blue = "FF";
-		
-		if(color.length == 7){
-	
-			red = color.substr(1, 2);
-			green = color.substr(3, 2);
-			blue = color.substr(5, 2);		
-		
-		}else if(color.length == 4){
-			
-			red = color.substr(1, 1);
-			green = color.substr(2, 1);
-			blue = color.substr(3, 1);
-			
-			red += red;
-			green += green;
-			blue += blue;
-	
-		}
-		colorRGB.r = parseInt(red,16);
-		colorRGB.g = parseInt(green,16);
-		colorRGB.b = parseInt(blue,16);
-		
-		return colorRGB;
-	},
-	
-	colorAdd :function(color, addR, addG, addB){
-		var colorRGB = this.colorSplit(color);
-		colorRGB.r = Math.min(colorRGB.r + addR, 255).toString(16);
-		colorRGB.g = Math.min(colorRGB.g + addG, 255).toString(16);
-		colorRGB.b = Math.min(colorRGB.b + addB, 255).toString(16);
-		colorRGB.r = (colorRGB.r.length <= 1) ? '0' + colorRGB.r : colorRGB.r;
-		colorRGB.g = (colorRGB.g.length <= 1) ? '0' + colorRGB.g : colorRGB.g;
-		colorRGB.b = (colorRGB.b.length <= 1) ? '0' + colorRGB.b : colorRGB.b;
-		return '#' + colorRGB.r + colorRGB.g + colorRGB.b;
-	},
-	initStatus : function(){
-		window.clearInterval(this.timer);
-		//this.stepTitle.text("Initialization...");
-	},
-	initBackground : function(){
-		
-		this.body.css({"background-color":this.loadingBackground});
-		
-		/*var beginColor,endColor,angle;
-		
 		try{
-			beginColor = bookConfig.bgBeginColor;
-			endColor = bookConfig.bgEndColor;
-			angle = bookConfig.bgMRotation;
+		  this.loadingCaption = bookConfig.loadingCaption ? bookConfig.loadingCaption : document.title;
+		  this.loadingCaptionFontSize = !isNaN(bookConfig.loadingCaptionFontSize) ? parseInt(bookConfig.loadingCaptionFontSize) : 28;
+		  this.loadingCaptionFontSize = Math.min(100, this.loadingCaptionFontSize);
+		  this.loadingCaptionFontSize = Math.max(0, this.loadingCaptionFontSize);
+		  this.loadingCaptionColor = bookConfig.loadingCaptionColor ? bookConfig.loadingCaptionColor : "#DDDDDD";
+		  this.loadingBackground = bookConfig.loadingBackground ? bookConfig.loadingBackground : "#1F2232";
+		  this.loadingPicture = bookConfig.loadingPicture ? bookConfig.loadingPicture : "";
+		//   this.loadingPictureWidth = !isNaN(bookConfig.loadingPictureWidth) ? parseInt(bookConfig.loadingPictureWidth) : 80;
+		  this.loadingPictureHeight = !isNaN(bookConfig.loadingPictureHeight) ? parseInt(bookConfig.loadingPictureHeight) : 150;
+		  this.loadingDisplayTime = !isNaN(bookConfig.loadingDisplayTime) ? parseInt(bookConfig.loadingDisplayTime) : 0;
+		  this.loadingSpacing = !isNaN(bookConfig.loadingSpacing) ? parseInt(bookConfig.loadingSpacing) : 20;
+		  this.showLoadingGif = (bookConfig.showLoadingGif != undefined) ? parseBool(bookConfig.showLoadingGif, true) : true;
+		  this.loadingVideo = bookConfig.loadingVideo ? bookConfig.loadingVideo : "";
+		  if(this.loadingVideo) this.showLoadingGif = false;
 		}catch(err){
-			beginColor = "#1F2232";
-			endColor = "#1F2232";
-			angle = 90;
+		  this.loadingCaption = document.title;
+		  this.loadingCaptionFontSize = 28;
+		  this.loadingCaptionColor = "#DDDDDD";
+		  this.loadingBackground = "#1F2232";
+		  this.loadingPicture = "";
+		  this.showLoadingGif = true;
+		//   this.loadingPictureWidth = 80;
+		  this.loadingPictureHeight = 150;
+		  this.loadingDisplayTime = 0;
+		  this.loadingSpacing = 20;
+		  this.loadingVideo = "";
 		}
-		
-		if(beginColor == undefined) beginColor = "#1F2232";
-		if(endColor == undefined) endColor = "#1F2232";
-		if(angle == undefined) angle = 90;
-		
-		var angleStr = "0% 0%,100% 0%";
-		switch(angle) {
-			case 45:
-				angleStr = "0% 0%,100% 100%";
-				break;
-			case 90:
-				angleStr = "0% 0%,0% 100%";
-				break;
-			case 135:
-				angleStr = "100% 0%,0% 100%";
-				break;
-			case 180:
-				angleStr = "100% 0%,0% 0%";
-			case 0:
-				angleStr = "0% 0%,100% 0%";
-				break;
+  },
+
+	initHtml : function(){
+		this.stop = false;
+
+		this.instance = document.createElement("div");
+		this.title = document.createElement("p");
+		this.title.innerHTML = this.loadingCaption;
+		this.copyright = document.createElement("p");
+		this.copyright.setAttribute("style", "position:absolute;bottom:5%;font-size:1.1rem;width:100%;text-align:center;");
+		if(window.userInfo && window.userInfo.copyright) this.copyright.innerHTML = window.userInfo.copyright;
+
+		this.bg = document.createElement("div");
+		this.bg.setAttribute("style", "transform:scale(1);");
+
+		if(this.showLoadingGif)
+			this.initAnimationHtml();
+
+		if(this.loadingVideo) {
+			this.initVideo();
 		}
-		
-		var browserType = this.getBrowserType();
-		
-		
-		if(browserType == 1) {
-			this.body.css("background-image", "-webkit-gradient(linear," + angleStr + ",from(" + beginColor + "),to(" + endColor + "))");
+
+		if(this.loadingPicture) {
+			this.image = document.createElement("img");
+			this.image.src = this.loadingPicture;
+			this.instance.appendChild(this.image);
+		}
+		this.instance.appendChild(this.title);
+		this.instance.appendChild(this.copyright);
+		this.bg.appendChild(this.instance);
+		document.body.appendChild(this.bg);
+	},
+
+	initVideo: function(){
+		this.videoImage = document.createElement("img");
+		this.videoImage.src = videoImage;
+		this.videoImage.setAttribute("style", "position: absolute; top: 0px; right: 0px;left:0;bottom:0;margin:auto; z-index: 4;");
+		this.videoImage.addEventListener("click", function(){
+			this.video.style.display = "block";
+			this.instance.style.display = "none";
+			this.video.play();
+		}.bind(this));
+
+		this.videoLoadImage = document.createElement("div");
+		this.videoLoadImage.setAttribute("style", "position: absolute; top: auto; right: 0px;left:0;bottom:50%;margin:auto; z-index: 4;");
+		this.videoLoadImage.setAttribute("class", "loader");
+
+		this.video = document.createElement("video");
+		this.video.src = this.loadingVideo;
+		// this.video.setAttribute("webkit-playsinline", "true");
+		// this.video.setAttribute("x5-playsinline", "true");
+		// this.video.setAttribute("playsinline", "");
+		this.video.setAttribute("preload", "auto");
+		// this.video.setAttribute("controls", "controls");
+		// this.video.setAttribute("muted", "");
+		// this.video.setAttribute("x-webkit-airplay", "allow");
+		this.video.setAttribute("style", "width: 100%; height: 100%; display:none;object-fit: fill; position: absolute; top: 0px; right: 0px; z-index: 3;");
+		this.bg.appendChild(this.video);
+		this.instance.appendChild(this.videoImage);
+		this.instance.appendChild(this.videoLoadImage);
+		this.video.load();
+	},
+
+	showVideo: function(){
+		// $(this.instance).fadeOut(500, function(){
 			
-		} else if(browserType == 2) {
-			this.body.css("background-image", "-moz-linear-gradient(left " + _angle + "deg," + beginColor + "," + endColor + ")");
-	
-		} else if(browserType == 3) {
-			this.body.css("filter", "progid:DXImageTransform.Microsoft.Gradient(GradientType=1, EndColorStr=" +
-				endColor + ", StartColorStr=" + beginColor + ");");
-		};*/
+		// }.bind(this));
+		// $(this.videoImage).fadeIn(500, function(){
+			this.videoImage.style.display = "block";
+			this.videoLoadImage.style.display = "none";
+		// });
+	},
+
+	loadingSvg: function(){
+		// this.loadImageUrl = "<svg t=\"1525916222299\" class=\"icon\" style=\"\" viewBox=\"130 0 800 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2478\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"49\" height=\"56\"><defs><style type=\"text/css\"></style></defs><path d=\"M835.55027 48.761905C876.805122 48.761905 910.222223 81.441158 910.222223 121.753604L910.222223 902.095C910.222223 902.095 910.222223 942.409011 876.805 975.238095L113.777778 975.238095 113.777778 24.380952 88.888889 48.761905 835.55027 48.761905ZM64 0 64 24.380952 64 1024L960 1024C835.55027 1024 904.277615 1024 960 969.325498L960 54.49204C960 54.49204 904.277615 0 835.55027 0L88.888889 0 64 0Z\" p-id=\"2479\"></path><path d=\"M775.164361 219.428572C788.910114 219.428572 800.05325 208.512847 800.05325 195.047619 800.05325 181.582391 788.910114 170.666667 775.164361 170.666667L263.111111 170.666667C249.365357 170.666667 238.222222 181.582391 238.222222 195.047619 238.222222 208.512847 249.365357 219.428572 263.111111 219.428572L775.164361 219.428572Z\" p-id=\"2481\"></path><path d=\"M775.164361 365.714285C788.910114 365.714285 800.05325 354.798562 800.05325 341.333333 800.05325 327.868105 788.910114 316.952382 775.164361 316.952382L263.111111 316.952382C249.365357 316.952382 238.222222 327.868105 238.222222 341.333333 238.222222 354.798562 249.365357 365.714285 263.111111 365.714285L775.164361 365.714285Z\" p-id=\"2482\"></path><path d=\"M775.164361 536.380951C788.910114 536.380951 800.05325 525.465229 800.05325 512 800.05325 498.534771 788.910114 487.619049 775.164361 487.619049L263.111111 487.619049C249.365357 487.619049 238.222222 498.534771 238.222222 512 238.222222 525.465229 249.365357 536.380951 263.111111 536.380951L775.164361 536.380951Z\" p-id=\"2483\"></path></svg>";
+
+		var loadImageUrl = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+		loadImageUrl.setAttribute("t", "1525916222299");
+		loadImageUrl.setAttribute("class", "icon");
+		loadImageUrl.setAttribute("style", "");
+		loadImageUrl.setAttribute("viewBox", "130 0 800 1024");
+		loadImageUrl.setAttribute("version", "1.1");
+		loadImageUrl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+		loadImageUrl.setAttribute("p-id", "2478");
+		loadImageUrl.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+		loadImageUrl.setAttribute("width", "49");
+		loadImageUrl.setAttribute("height", "56");
+
+		var defs = document.createElementNS("http://www.w3.org/2000/svg", 'defs');
+		var style = document.createElementNS("http://www.w3.org/2000/svg", 'style');
+		style.setAttribute("type", "text/css");
+		var path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+		path1.setAttribute("d", "M835.55027 48.761905C876.805122 48.761905 910.222223 81.441158 910.222223 121.753604L910.222223 902.095C910.222223 902.095 910.222223 942.409011 876.805 975.238095L113.777778 975.238095 113.777778 24.380952 88.888889 48.761905 835.55027 48.761905ZM64 0 64 24.380952 64 1024L960 1024C835.55027 1024 904.277615 1024 960 969.325498L960 54.49204C960 54.49204 904.277615 0 835.55027 0L88.888889 0 64 0Z");
+		path1.setAttribute("p-id", "2479");
+
+		var path2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+		path2.setAttribute("d", "M775.164361 219.428572C788.910114 219.428572 800.05325 208.512847 800.05325 195.047619 800.05325 181.582391 788.910114 170.666667 775.164361 170.666667L263.111111 170.666667C249.365357 170.666667 238.222222 181.582391 238.222222 195.047619 238.222222 208.512847 249.365357 219.428572 263.111111 219.428572L775.164361 219.428572Z");
+		path2.setAttribute("p-id", "2481");
+
+		var path3 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+		path3.setAttribute("d", "M775.164361 365.714285C788.910114 365.714285 800.05325 354.798562 800.05325 341.333333 800.05325 327.868105 788.910114 316.952382 775.164361 316.952382L263.111111 316.952382C249.365357 316.952382 238.222222 327.868105 238.222222 341.333333 238.222222 354.798562 249.365357 365.714285 263.111111 365.714285L775.164361 365.714285Z");
+		path3.setAttribute("p-id", "2482");
+
+		var path4 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+		path4.setAttribute("d", "M775.164361 536.380951C788.910114 536.380951 800.05325 525.465229 800.05325 512 800.05325 498.534771 788.910114 487.619049 775.164361 487.619049L263.111111 487.619049C249.365357 487.619049 238.222222 498.534771 238.222222 512 238.222222 525.465229 249.365357 536.380951 263.111111 536.380951L775.164361 536.380951Z");
+		path4.setAttribute("p-id", "2483");
+
+		defs.appendChild(style);
+		loadImageUrl.appendChild(defs);
+		loadImageUrl.appendChild(path1);
+		loadImageUrl.appendChild(path2);
+		loadImageUrl.appendChild(path3);
+		loadImageUrl.appendChild(path4);
+
+		return loadImageUrl;
+	},
+
+	initAnimationHtml : function(){
+		if(!document.createElementNS) return;
+
+		this.loadBox = document.createElement("div");
+		var img1 = this.loadingSvg();
+		var img2 = this.loadingSvg();
+		this.img3 = this.loadingSvg();
+		if(isIphoneXor11()) {
+			var self = this;
+			var index = 0;
+			this.loadingAnimation = true;
+			var render = function(){
+				window.setTimeout(function(){
+					console.log("loadingAnimation");
+					if(!self.loadingAnimation) return;
+					try {
+						var rotateY = 1.8 * index;
+						var tmpStyle = "rotateY(-" + rotateY + "deg) scale(0.8)";
+						self.img3.style["-webkit-transform"] = tmpStyle;
+						self.img3.style["-o-transform"] = tmpStyle;
+						self.img3.style["-ms-transform"] = tmpStyle;
+						self.img3.style["-moz-transform"] = tmpStyle;
+						self.img3.style["transform"] = tmpStyle;
+						index ++ ;
+						index = index % 101;
+						render();
+					} catch (error) {
+						
+					}
+				}, 7);
+			}
+			render();
+		} else {
+			this.img3.setAttribute("class", "loadingRun");
+		}
+
+		this.img3.setAttribute("style", (
+			"position : absolute;" +
+			"left : 20px;" +
+			"top : 0;" +
+			// "z-index : -1;" +
+			"-webkit-transform:rotateY(0deg) scale(0.8);" +
+			"-o-transform:rotateY(0deg) scale(0.8);" +
+			"-ms-transform:rotateY(0deg) scale(0.8);" +
+			"-moz-transform:rotateY(0deg) scale(0.8);" +
+			"transform:rotateY(0deg) scale(0.8);" +
+			"-webkit-transform-origin : 0 0;" +
+			"-o-transform-origin : 0 0;" +
+			"-ms-transform-origin : 0 0;" +
+			"-moz-transform-origin : 0 0;" +
+			"transform-origin : 0 0;" +
+			"will-change : transform;" +
+			"fill :"  + this.loadingCaptionColor + ";"
+		));
+
+		img2.setAttribute("style", (
+			"position : absolute;" +
+			"left : 20px;" +
+			"top : 0;" +
+			"-webkit-transform:rotateY(180deg) scale(0.8);" +
+			"-o-transform:rotateY(180deg) scale(0.8);" +
+			"-ms-transform:rotateY(180deg) scale(0.8);" +
+			"-moz-transform:rotateY(180deg) scale(0.8);" +
+			"transform:rotateY(180deg) scale(0.8);" +
+			"-webkit-transform-origin : 0 0;" +
+			"-o-transform-origin : 0 0;" +
+			"-ms-transform-origin : 0 0;" +
+			"-moz-transform-origin : 0 0;" +
+			"transform-origin : 0 0;" +
+			"fill : " + this.loadingCaptionColor + ";"
+		));
+
+		img1.setAttribute("style", (
+			"position : absolute;" +
+			"left : 20px;" +
+			"top : 0;" +
+			"-webkit-transform:rotateY(0) scale(0.8);" +
+			"-o-transform:rotateY(0) scale(0.8);" +
+			"-ms-transform:rotateY(0) scale(0.8);" +
+			"-moz-transform:rotateY(0) scale(0.8);" +
+			"transform:rotateY(0) scale(0.8);" +
+			"-webkit-transform-origin : 0 0;" +
+			"-o-transform-origin : 0 0;" +
+			"-ms-transform-origin : 0 0;" +
+			"-moz-transform-origin : 0 0;" +
+			"transform-origin : 0 0;" +
+			"fill : " + this.loadingCaptionColor + ";"
+		));
+
+		this.loadBox.appendChild(img1);
+		this.loadBox.appendChild(img2);
+		this.loadBox.appendChild(this.img3);
+		this.instance.appendChild(this.loadBox);
+	},
+
+	startLoading : function(){
 		
-	}
-};
+	},
+
+	destroy : function(){
+		if(global.isIE8()||global.isIE9()){
+			$(this.bg).animate({"opacity":"0"},0.6,function(){
+				this.loadingAnimation = false;
+				$("body>style").html("");
+				$(this.bg).remove();
+				$("body").css({"background-color" : ""});
+			}.bind(this));
+		}else{
+			animateOnce($(this.bg) , {"opacity":"0"} , 0.6 ,function(){
+				this.loadingAnimation = false;
+				$(this.img3).attr("class", "");
+				$("body>style").html("");
+				$(this.bg).remove();
+				$(this.image).attr("src", "");
+				$("body").css({"background-color" : ""});
+			}.bind(this));
+		}
+
+	},
+
+	initCss : function(){
+		document.getElementsByTagName("html")[0].setAttribute("style",(
+			"margin : 0;" +
+			"padding : 0;" +
+			"width : 100%;" +
+			"height : 100%;"
+		));
+
+		document.body.setAttribute("style", (
+			"margin : 0;" +
+			"padding : 0;" +
+			"width : 100%;" +
+			"height : 100%;" +
+			"position : fixed;" +
+			"background-color :" + this.loadingBackground + ";"
+		));
+
+		this.bg.setAttribute("style", (
+			"margin : 0;" +
+			"padding : 0;" +
+			"width : 100%;" +
+			"height : 100%;" +
+			"position : fixed;" +
+			"background-color:"  + this.loadingBackground + ";"
+		));
+
+		this.instance.setAttribute("style", (
+			"width : 100%;" +
+			"height : 100%;" +
+			"opacity : 1;" +
+			"color :" +  this.loadingCaptionColor + ";" +
+			"text-align : center;" +
+			"vertical-align : middle;" +
+			"font-family : Tahoma;" +
+		  "position : relative;"
+
+		));
+
+		var titleTran = "translate(-50%, " + this.loadingSpacing/2 + "px)";
+		var loadingBoxTran = "translate(-50% , -" + (this.loadingSpacing/2 + 45) + "px)";
+		var videoImageTran = "translate(-50% , -" + (this.loadingSpacing/2 + 60) + "px)";
+		// var videoLoadImageTran = "translate(-50% , -" + (this.loadingSpacing/2 + 60) + "px)";
+		var imageTran = "translate(-50% , 0)";
+		var imageTop = "5%";
+		var imageDisplay = "block";
+
+		var loadingPictureHeight = Math.min(window.innerHeight * 0.35, this.loadingPictureHeight);
+		if(this.showLoadingGif || this.loadingVideo){
+			if(window.innerHeight <= 300) imageDisplay = "none";
+		} else {
+			imageTop = "50%";
+			imageTran = "translate(-50% , -" + (this.loadingSpacing/2 + loadingPictureHeight) + "px)";
+		}
+
+		if(this.image) this.image.setAttribute("style", (
+			"display : " + imageDisplay + ";" +
+			"position : absolute;" +
+			"top : " + imageTop + ";" +
+			"left : 50%;" +
+			"-webkit-transform :"  + imageTran + ";" +
+		  "-moz-transform :"  + imageTran + ";" +
+		  "-ms-transform :" + imageTran + ";" +
+		  "-o-transform :" + imageTran + ";" +
+			"transform :"  +imageTran + ";" +
+			// "width : " + this.loadingPictureWidth + "px;" +
+			"height : " + this.loadingPictureHeight + "px;" +
+			"max-width : 90%;" +
+			"max-height : 35%;"
+		));
+
+		this.title.setAttribute("style", (
+			"font-family:Arial,Helvetica,sans serif;" +
+		  "font-size : " + this.loadingCaptionFontSize + "px;" +
+		  "position : absolute;" +
+		  "top : 50%;" +
+		  "left : 50%;" +
+		  "-webkit-transform :"  + titleTran + ";" +
+		  "-moz-transform :"  + titleTran + ";" +
+		  "-ms-transform :" + titleTran + ";" +
+		  "-o-transform :" + titleTran + ";" +
+			"transform :"  +titleTran + ";" +
+		  "margin : 0;" +
+		  "padding : 0;" +
+		  "width:90%;"
+		));
+
+		if(this.videoImage) this.videoImage.setAttribute("style", (
+			"position:relative;" +
+			"cursor:pointer;" +
+			"display:none;" +
+			"z-index:4;" +
+			"perspective:200px;" +
+			"-webkit-transform-style:preserve-3d;" +
+			"-o-transform-style:preserve-3d;" +
+			"-ms-transform-style:preserve-3d;" +
+			"-moz-transform-style:preserve-3d;" +
+			"transform-style:preserve-3d;" +
+			"position : absolute;" +
+			"width : auto;" +
+			"height : 60px;" +
+			"left : 50%;" +
+			"top : 50%;" +
+			"-webkit-transform : " +videoImageTran + ";" +
+		  "-moz-transform : " +videoImageTran + ";" +
+		  "-ms-transform : " +videoImageTran + ";" +
+		  "-o-transform : " +videoImageTran + ";" +
+			"transform : " + videoImageTran + ";" +
+		  "padding : 0;"
+		));
+
+		if(this.videoLoadImage) 
+			this.videoLoadImage.style["margin-bottom"] = this.loadingSpacing/2 + "px";
+
+		if(this.loadBox) this.loadBox.setAttribute("style", (
+			"position:relative;" +
+			"perspective:200px;" +
+			"-webkit-transform-style:preserve-3d;" +
+			"-o-transform-style:preserve-3d;" +
+			"-ms-transform-style:preserve-3d;" +
+			"-moz-transform-style:preserve-3d;" +
+			"transform-style:preserve-3d;" +
+			"position : absolute;" +
+			"width : 39.2px;" +
+			"height : 44.8px;" +
+			"left : 50%;" +
+			"top : 50%;" +
+			"-webkit-transform : " +loadingBoxTran + ";" +
+		  "-moz-transform : " +loadingBoxTran + ";" +
+		  "-ms-transform : " +loadingBoxTran + ";" +
+		  "-o-transform : " +loadingBoxTran + ";" +
+			"transform : " + loadingBoxTran + ";" +
+		  "padding : 0;"
+		));
+	},
+
+	onResize : function(){}
+
+}
 
 var jsLoadingBar = new LoadingJS();
