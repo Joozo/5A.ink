@@ -2,7 +2,7 @@ var htmlConfig = {
 	"bookConfig": {
 		"bookPageStretch": "false",
 		"maxHeightToSmallMode": 300,
-		"appName": "fliphtml5",
+		"appName": "华名陶 瓷如意",
 		"totalPageCount": 62,
 		"largePageWidth": 751.181,
 		"largePageHeight": 992.126,
@@ -12,8 +12,8 @@ var htmlConfig = {
 		"ToolBarsSettings": "",
 		"TitleBar": "",
 		"appLogoLinkURL": "",
-		"bookTitle": "FLIPBOOK",
-		"bookDescription": "",
+		"bookTitle": "华名陶",
+		"bookDescription": "华名陶",
 		"ButtonsBar": "",
 		"ShareButton": "",
 		"ThumbnailsButton": "",
@@ -26,7 +26,7 @@ var htmlConfig = {
 		"bgEndColor": "#fce",//背景底部颜色
 		"bgMRotation": 90,//背景色旋转角度
 		"pageBackgroundColor": "#FFFFFF",
-		"flipshortcutbutton": "Show",//翻转快捷键是否可见（中间部分左右箭头）
+		"flipshortcutbutton": "Hide",//翻转快捷键是否可见（中间部分左右箭头）
 		"BookMargins": "",
 		"topMargin": 10,
 		"bottomMargin": 10,
@@ -39,16 +39,16 @@ var htmlConfig = {
 		"OpenWindow": "Blank",
 		"BookMarkButtonVisible": "Hide",
 		"productName": "华名陶",
-		"homePage": "http:\/\/baidu.com\/",
+		"homePage": "http:\/\/bdu.com\/",
 		"isFlipPdf": "false",
 		"TableOfContentButtonVisible": "Hide",
 		"searchTextJS": "files\/search\/book_config.js",
-		"searchPositionJS": "files\/search\/text_position[%d].js",
+		"searchPositionJS": "files\/search\/text_position[%d].js", //搜索功能每个页面一个 JS,主要说明文字位置和内容
 		"articleListPath": "..\/articles\/config\/articleList.json",
-		"FlipSound": "No",
+		"FlipSound": "Yes",
 		"QRCode": "Hide",//二维码是否显示
-		"appLogoIcon": "",
-		"HomeURL": "",
+		"appLogoIcon": "", //左上角 LOGO 图片 URL
+		"HomeURL": "", //logo链接
 		"appLogoOpenWindow": "Blank",
 		"toolbarColor": "#eeeeee",
 		"iconColor": "#fbfbd9",
@@ -62,14 +62,14 @@ var htmlConfig = {
 		"ShareButtonVisible": "Hide",//分享按钮是否显示
 		"thumbnailAlpha": 70,
 		"FullscreenButtonVisible": "Show",//全屏按钮是否显示
-		"SearchButtonVisible": "Show",//搜索按钮是否显示
+		"SearchButtonVisible": "Hide",//搜索按钮是否显示
 		"leastSearchChar": 2,
 		"PrintButtonVisible": "Hide",//打印按钮是否显示
 		"printWatermarkFile": "",
-		"BackgroundSoundButtonVisible": "Show",
-		"BackgroundSoundURL": "style\/raw\/slidesound.mp3",
-		"BackgroundSoundLoop": "-1",
-        "bgSoundVol": "50",
+		"BackgroundSoundButtonVisible": "Hide",
+		"BackgroundSoundURL": "", //背景音乐
+		"BackgroundSoundLoop": "-1", //-1循环播放 1 播放一次
+        "bgSoundVol": "50", //背景音乐音量
 		"HelpButtonVisible": "Hide",
 		"helpContentFileURL": "",
 		"helpWidth": 400,
@@ -85,9 +85,9 @@ var htmlConfig = {
 		"autoPlayLoopCount": "1",
 		"minZoomWidth": 403,
 		"minZoomHeight": 518,
-		"mouseWheelFlip": "No",
+		"mouseWheelFlip": "Yes", //鼠标滚轮翻转 Yes No
 		"DownloadButtonVisible": "Hide",
-		"DownloadURL": "https:\/\/flhtml5.com\/download\/download-pdf-file.php?str=x0DZh9GTud3bENXamYDO0MzMxUTPkl0av9mY",
+		"DownloadURL": "https:\/\/8.com\/download\/download-pdf-file.php?str=x0DZh9GTud3bENXamYDO0MzMxUTPkl0av9mY",
 		"UserInforSetting": "",
 		"backGroundImgURL": "",
 		"LeftShadowWidth": 15,
@@ -101,14 +101,14 @@ var htmlConfig = {
 		"FlipStyle": "Flip",
 		"totalPagesCaption": "",
 		"pageNumberCaption": "",
-		"googleAnalyticsID": "UA-167191674-2",
+		"googleAnalyticsID": "",
 		"UIBaseURL": "",
-		"language": "Spanish",
-		"AboutAddress": " Isabel La Cat\u00f3lica 6470, Las Condes, Santiago. Chile",
-		"AboutAuthor": "REDAGRICOLA",
-		"AboutEmail": "marketing@redagricola.com",
-		"AboutMobile": "(+56) 2 2201 0550",
-		"AboutWebsite": "https:\/\/www.redagricola.com\/",
+		"language": "Chinaese",
+		"AboutAddress": " 华名陶",
+		"AboutAuthor": "Joozo",
+		"AboutEmail": "joozo@joozo.cn",
+		"AboutMobile": "(+86) 18600709077",
+		"AboutWebsite": "http:\/\/joozo.cn\/",
 		"AboutDescription": "",
 		"VideoButtonVisible": "Hide",
 		"SlideshowButtonVisible": "Hide",
@@ -130,8 +130,8 @@ var htmlConfig = {
 		"iconFontColor": "#022c17",
 		"formBackgroundColor": "#495867",
 		"formFontColor": "#eeeeee",
-		"backgroundOpacity": "100",
-		"autoDoublePage": "Auto",
+		"backgroundOpacity": "90",
+		"autoDoublePage": "Auto",  //默认值Auto , No只显示单页
 		"searchKeywordFontColor": "#FFB000",
 		"backgroundPosition": "Stretch",
 		"CurlingPageCorner": "No",
@@ -166,7 +166,6 @@ var htmlConfig = {
 		"showLoadingGif": "Yes",
 		"loadingDisplayTime": "0",
 		"loadingVideo": "",
-		"bgSoundVol": "50",
 		"buttonsSortXML": [],
 		"phoneToolbarType": "image",
 		"phoneIconNumber": "6",
