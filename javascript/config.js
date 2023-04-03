@@ -131,7 +131,7 @@ var htmlConfig = {
 		"formBackgroundColor": "#495867",
 		"formFontColor": "#eeeeee",
 		"backgroundOpacity": "90",
-		"autoDoublePage": "Auto",  //默认值Auto , No只显示单页
+		"autoDoublePage": "Auto",  //默认值Auto , No只显示单页,控制显示一页还是两页
 		"searchKeywordFontColor": "#FFB000",
 		"backgroundPosition": "Stretch",
 		"CurlingPageCorner": "No",
